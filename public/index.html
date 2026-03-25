@@ -317,7 +317,7 @@
 </div>
 
 <script>
-const API_URL = 'https://goal-tracker-3-8ko0.onrender.com';
+const API_URL = 'https://motivation-goal-tracker-final.onrender.com';
 
 function toggleForms() {
   const loginForm = document.getElementById('login-form');
@@ -338,10 +338,11 @@ document.getElementById('login-inputs').addEventListener('submit', async (e) => 
   loading.classList.add('show');
 
   try {
-    const res = await fetch(`${API_URL}/api/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
+        const res = await fetch(`${API_URL}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ email, password })
     });
 
     const data = await res.json();
@@ -383,11 +384,12 @@ document.getElementById('register-inputs').addEventListener('submit', async (e) 
   loading.classList.add('show');
 
   try {
-    const res = await fetch(`${API_URL}/api/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, email, password })
-    });
+        const res = await fetch(`${API_URL}/api/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ username, email, password })
+      });
 
     const data = await res.json();
     loading.classList.remove('show');
