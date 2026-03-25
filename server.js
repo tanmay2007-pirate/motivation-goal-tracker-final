@@ -12,22 +12,9 @@ const app = express();
 
 // Middleware
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
-      scriptSrcAttr: ["'unsafe-inline'"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
-      connectSrc: [
-        "'self'",
-        "https://goal-tracker-3-8ko0.onrender.com",
-        "https://motivation-goal-tracker-final.onrender.com"
-        ],
-      imgSrc: ["'self'", "data:"],
-    }
-  }
+  contentSecurityPolicy: false
 }));
+
 app.use(cors({
   origin: "https://motivation-goal-tracker-final.onrender.com",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
