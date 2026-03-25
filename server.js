@@ -19,12 +19,23 @@ app.use(helmet({
       scriptSrcAttr: ["'unsafe-inline'"],
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
-      connectSrc: ["'self'", "https://goal-tracker-3-8ko0.onrender.com"],
+      connectSrc: [
+        "'self'",
+        "https://goal-tracker-3-8ko0.onrender.com",
+        "https://motivation-goal-tracker-final.onrender.com"
+        ],
       imgSrc: ["'self'", "data:"],
     }
   }
 }));
-app.use(cors());
+app.use(cors({
+  origin: "https://motivation-goal-tracker-final.onrender.com",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
+}));
+
+app.options("*", cors());
 app.use(express.json());
 app.use(express.static('public'));
 
