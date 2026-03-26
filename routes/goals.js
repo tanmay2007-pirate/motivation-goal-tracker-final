@@ -204,31 +204,23 @@ router.get('/stats/summary', auth, async (req, res) => {
 // ── HELPER: Update Streak ──────────────────────────────────────────
 async function updateStreak(userId) {
   const user = await User.findById(userId);
+  if (!user) return;
+  if (!user.streak) user.streak = { current: 0, best: 0, days: [] };
+  if (!user.streak.days) user.streak.days = [];
   const today = new Date().toISOString().split('T')[0];
-
-  if (!user.streak.days.includes(today)) {
-    user.streak.days.push(today);
-
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayStr = yesterday.toISOString().split('T')[0];
-
-    if (user.streak.days.includes(yesterdayStr)) {
-      user.streak.current += 1;
-    } else {
-      user.streak.current = 1;
-    }
-
-    if (user.streak.current > user.streak.best) {
-      user.streak.best = user.streak.current;
-    }
-
-    await User.findByIdAndUpdate(userId, {
-      'streak.days': user.streak.days,
-      'streak.current': user.streak.current,
-      'streak.best': user.streak.best
-    });
-  }
+  if (user.streak.days.includes(today)) return;
+  user.streak.days.push(today);
+  if (user.streak.days.length > 365) user.streak.days = user.streak.days.slice(-365);
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayStr = yesterday.toISOString().split('T')[0];
+  user.streak.current = user.streak.days.includes(yesterdayStr) ? user.streak.current + 1 : 1;
+  if (user.streak.current > user.streak.best) user.streak.best = user.streak.current;
+  await User.findByIdAndUpdate(userId, {
+    'streak.days': user.streak.days,
+    'streak.current': user.streak.current,
+    'streak.best': user.streak.best
+  });
 }
 
 module.exports = router;

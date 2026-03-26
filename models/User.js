@@ -36,7 +36,7 @@ const userSchema = new mongoose.Schema({
   streak: {
     current: { type: Number, default: 0 },
     best: { type: Number, default: 0 },
-    days: [String]
+    days: { type: [String], default: [] }
   },
   createdAt: {
     type: Date,
